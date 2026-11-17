@@ -1,5 +1,5 @@
-# ZX Spectrum QR transfer — Short Circuit (1987)
-# X-Seti - November 17 2025 
+# ZX Spectrum QR transfer - Short Circuit (1987)
+# X-Seti - November 17 2025 - This little project is WIP, just a bit of fun. 
 
 This package converts the supplied TAP file into a set of numbered QR codes and
 reconstructs the original TAP file from those codes.
