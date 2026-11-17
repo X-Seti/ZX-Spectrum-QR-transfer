@@ -1,0 +1,5 @@
+File: Short Circuit (1987)(Erbe Software)(128k)[re-release].tap
+Bytes: 91033
+SHA-256: 9e71e4099210c253de1e36be6b60ab8fc2644230d20475ca624456610abba71b
+QR codes: 83
+Chunk bytes: 1100
