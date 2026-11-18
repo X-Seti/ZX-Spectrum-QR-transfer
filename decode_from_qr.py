@@ -21,18 +21,28 @@ def parse_payload(text):
     except Exception:
         return None
 
+def decode_codes(image, detector):
+    """Try multi-code decoding, then single-code decoding as a fallback."""
+    decoded = []
+    try:
+        ok, texts, points, straight = detector.detectAndDecodeMulti(image)
+        # Keep any partial results even if OpenCV reports multi-decode failure.
+        if texts is not None:
+            decoded.extend(t for t in texts if t)
+    except Exception:
+        pass
+    try:
+        text, points, straight = detector.detectAndDecode(image)
+        if text and text not in decoded:
+            decoded.append(text)
+    except Exception:
+        pass
+    return decoded
+
 def decode_image(path, detector):
     image = cv2.imread(str(path))
     if image is None: return []
-    # Multi-decode can find more than one code in an image.
-    try:
-        ok, texts, points, straight = detector.detectAndDecodeMulti(image)
-        if ok:
-            return [t for t in texts if t]
-    except Exception:
-        pass
-    text, points, straight = detector.detectAndDecode(image)
-    return [text] if text else []
+    return decode_codes(image, detector)
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
@@ -97,11 +107,6 @@ def main():
     print(f"SHA-256 verified: {actual}")
 
 def decode_frame(frame, detector):
-    try:
-        ok, texts, points, straight = detector.detectAndDecodeMulti(frame)
-        if ok: return [t for t in texts if t]
-    except Exception: pass
-    text, points, straight = detector.detectAndDecode(frame)
-    return [text] if text else []
+    return decode_codes(frame, detector)
 
 if __name__ == "__main__": main()
